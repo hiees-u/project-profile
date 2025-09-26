@@ -3,7 +3,7 @@ name: Deploy Vue to GitHub Pages
 on:
   push:
     branches:
-      - pos   # 👈 chỉ chạy khi push branch pos
+      - pos
 
 jobs:
   build-deploy:
@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
+        with:
+          ref: pos
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -23,6 +25,11 @@ jobs:
 
       - name: Build project
         run: npm run build
+
+      - name: Setup Git user
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
