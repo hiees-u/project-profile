@@ -1,5 +1,9 @@
 <!-- src/components/GlbViewer.vue -->
 <script setup lang="ts">
+import { onMounted, ref } from 'vue';
+import * as THREE from "three";
+
+const rendererRef = ref();
 const astronautUrl = new URL(
   "../assets/model3d/little_astronaut.glb",
   import.meta.url
@@ -7,12 +11,18 @@ const astronautUrl = new URL(
 
 const cameraPosition = { x: 2, y: 2, z: 7 };
 const pixelRatio = window.devicePixelRatio || 1;
+
+function handleRendererCreated({ renderer }: { renderer: THREE.WebGLRenderer }) {
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.0;
+}
 </script>
 
 <template>
   <div class="viewer-container">
-    <Renderer :pixelRatio="pixelRatio" resize orbit-ctrl antialias alpha>
-      <Camera :position="cameraPosition" :lookAt="{ x: 0, y: 2, z: 0 }" />
+    <Renderer :pixelRatio="pixelRatio" resize orbit-ctrl antialias alpha @created="handleRendererCreated">
+      <Camera :position="cameraPosition" :lookAt="{ x: 0, y: 1, z: 0 }" />
       <Scene>
         <HemisphereLight
           :intensity="4"
@@ -29,8 +39,8 @@ const pixelRatio = window.devicePixelRatio || 1;
 
 <style scoped>
 .viewer-container {
-  width: 150px; /* hoặc bất kỳ kích thước nào bạn muốn */
-  height: 150px;
+  width: 250px; /* hoặc bất kỳ kích thước nào bạn muốn */
+  height: 250px;
   background-color: transparent;
   position: relative;
   overflow: hidden;
