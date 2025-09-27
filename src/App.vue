@@ -1,10 +1,12 @@
+<!-- src\App.vue -->
 <script setup lang="ts">
-import StarryNight from './components/StarryNight.vue';
+import StarryNight from '@/components/StarryNight.vue';
+import Astronaut from '@/components/Astronaut.vue';
 </script>
 
 <template>
-  <h1>HIU</h1>
   <StarryNight />
+  <Astronaut />
 </template>
 
 <style scoped>
