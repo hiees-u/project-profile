@@ -2,10 +2,7 @@
 <script setup lang="ts">
 import gsap from "gsap";
 import * as THREE from "three";
-import { ref } from "vue";
-import { VueFinalModal } from "vue-final-modal";
-
-const isShowModal = ref(false);
+import { ref, type Ref } from "vue";
 
 const astronautUrl = new URL(
   "../assets/model3d/little_astronaut.glb",
@@ -14,6 +11,11 @@ const astronautUrl = new URL(
 
 const cameraPosition = { x: 2, y: 5, z: 7 };
 const pixelRatio = window.devicePixelRatio || 1;
+const model = ref<any>(null);
+
+let renderer: Ref<THREE.WebGLRenderer | null> = ref(null);
+let scene: Ref<THREE.Scene | null> = ref(null);
+let camera: Ref<THREE.Camera | null> = ref(null);
 
 function handleRendererCreated({
   renderer,
@@ -26,33 +28,33 @@ function handleRendererCreated({
 }
 
 function onModelLoadeded(gltf: any) {
-  isShowModal.value = true;
-  //   setInterval(() => {
-  //     isShowModal.value = false;
-  //   }, 3000);
   gsap.to(gltf.scene.position, {
     duration: 3,
-    z: 3, // từ -20 bay về 0
+    z: 3,
     ease: "power2.inOut",
   });
+
+  console.log('renderer ', renderer.value);
+  console.log('scene ', scene.value);
+  console.log('camera ', camera.value);
+  console.log('model ', model.value);
 };
 </script>
 
 <template>
   <div class="viewer-container">
-    <VueFinalModal v-model="isShowModal">
-      <div class="popup-custom"><span>Hi, I'm Híu</span></div>
-    </VueFinalModal>
     <Renderer
       :pixelRatio="pixelRatio"
+      ref="renderer"
       resize
       orbit-ctrl
       antialias
       alpha
       @created="handleRendererCreated"
     >
-      <Camera :position="cameraPosition" :lookAt="{ x: 0, y: 1, z: 0 }" />
-      <Scene>
+      <Camera ref="camera" :position="cameraPosition" :lookAt="{ x: 0, y: 1, z: 0 }" />
+      <Scene
+      ref="scene">
         <HemisphereLight
           :intensity="4"
           :color="'#ffffff'"
@@ -60,8 +62,9 @@ function onModelLoadeded(gltf: any) {
         />
         <HemisphereLight :intensity="1" />
         <GltfModel
+          ref="model"
           :src="astronautUrl"
-          :position="{ x: 0, y: 0, z: -20 }"
+          :position="{ x: 1, y: 0, z: -20 }"
           @load="onModelLoadeded"
         />
       </Scene>
@@ -85,12 +88,5 @@ function onModelLoadeded(gltf: any) {
   height: 100% !important;
   display: block;
   pointer-events: auto;
-}
-
-.popup-custom {
-  background-color: #fff;
-  color: #000;
-  width: fit-content;
-  position: fixed;
 }
 </style>
