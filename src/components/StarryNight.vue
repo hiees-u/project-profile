@@ -87,7 +87,7 @@ onBeforeUnmount(() => {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: -1; /* Đặt phía sau nội dung */
+  z-index: -2; /* Đặt phía sau nội dung */
   width: 100vw;
   height: 100vh;
   background-color: black;

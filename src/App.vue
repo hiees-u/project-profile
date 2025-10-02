@@ -1,14 +1,12 @@
 <!-- src\App.vue -->
 <script setup lang="ts">
 import StarryNight from '@/components/StarryNight.vue';
-import Astronaut from '@/components/Astronaut.vue';
-import Notification from './components/Notification.vue';
+import WrapperContent from '@/components/WrapperContent.vue';
 </script>
 
 <template>
   <StarryNight />
-  <Astronaut />
-  <Notification />
+  <WrapperContent/>
 </template>
 
 <style scoped>

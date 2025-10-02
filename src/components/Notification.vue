@@ -1,8 +1,13 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+
+const props = defineProps<{
+  isShow: boolean
+}>();
+</script>
 
 <template>
   <div class="wapper">
-    <div class="notification">
+    <div class="notification" v-if="isShow">
       <p>Hi! I'm Híu</p>
     </div>
   </div>
@@ -32,6 +37,7 @@
 .notification::after {
     content: '';
     position: absolute;
+    z-index: -1;
     top: 95%;
     left: 10px;
     border-width: 10px 10px 0 10px;

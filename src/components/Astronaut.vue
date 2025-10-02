@@ -2,6 +2,7 @@
 <script setup lang="ts">
 import gsap from "gsap";
 import * as THREE from "three";
+import { defineEmits } from 'vue'
 import { ref, type Ref } from "vue";
 
 const astronautUrl = new URL(
@@ -12,10 +13,13 @@ const astronautUrl = new URL(
 const cameraPosition = { x: 2, y: 5, z: 7 };
 const pixelRatio = window.devicePixelRatio || 1;
 const model = ref<any>(null);
-
 let renderer: Ref<THREE.WebGLRenderer | null> = ref(null);
 let scene: Ref<THREE.Scene | null> = ref(null);
 let camera: Ref<THREE.Camera | null> = ref(null);
+
+const emit = defineEmits<{
+  (e: 'isCompleteInit', value: boolean): void
+}>()
 
 function handleRendererCreated({
   renderer,
@@ -32,6 +36,9 @@ function onModelLoadeded(gltf: any) {
     duration: 3,
     z: 3,
     ease: "power2.inOut",
+    onComplete: () => {
+      emit('isCompleteInit', true)
+    }
   });
 
   console.log('renderer ', renderer.value);
