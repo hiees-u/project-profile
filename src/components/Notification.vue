@@ -20,6 +20,7 @@ const props = defineProps<{
   left: 0;
   right: 0;
   width: 100vw;
+  z-index: -1;
   height: 100vh;
 }
 
@@ -28,6 +29,7 @@ const props = defineProps<{
   top: 20px;
   left: 52%;
   background-color: #333;
+  z-index: -1;
   color: rgb(0, 0, 0);
   padding: 5px 20px;
   border-radius: 5px;

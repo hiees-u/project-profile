@@ -10,7 +10,8 @@ const astronautUrl = new URL(
   import.meta.url
 ).href;
 
-const cameraPosition = { x: 2, y: 5, z: 7 };
+const cameraPosition = { x: 5, y: 30, z: 25 };
+const astronautPosition = { x: 1, y: 14, z: -100 };
 const pixelRatio = window.devicePixelRatio || 1;
 const model = ref<any>(null);
 let renderer: Ref<THREE.WebGLRenderer | null> = ref(null);
@@ -71,7 +72,7 @@ function onModelLoadeded(gltf: any) {
         <GltfModel
           ref="model"
           :src="astronautUrl"
-          :position="{ x: 1, y: 0, z: -20 }"
+          :position="astronautPosition"
           @load="onModelLoadeded"
         />
       </Scene>
@@ -81,8 +82,8 @@ function onModelLoadeded(gltf: any) {
 
 <style scoped>
 .viewer-container {
-  width: 250px; /* hoặc bất kỳ kích thước nào bạn muốn */
-  height: 250px;
+  width: 100vw; /* hoặc bất kỳ kích thước nào bạn muốn */
+  height: 100vh;
   background-color: transparent;
   position: relative;
   overflow: hidden;
