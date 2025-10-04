@@ -2,8 +2,10 @@
 <script setup lang="ts">
 import gsap from "gsap";
 import * as THREE from "three";
-import { defineEmits } from 'vue'
+import { defineEmits } from "vue";
 import { ref, type Ref } from "vue";
+import Notification from "./Notification.vue";
+import type NotificationType from "../types/notification";
 
 const astronautUrl = new URL(
   "../assets/model3d/little_astronaut.glb",
@@ -17,10 +19,12 @@ const model = ref<any>(null);
 let renderer: Ref<THREE.WebGLRenderer | null> = ref(null);
 let scene: Ref<THREE.Scene | null> = ref(null);
 let camera: Ref<THREE.Camera | null> = ref(null);
+const messages = ref<NotificationType[]>([]);
+const isCompleteInit = ref(false);
 
 const emit = defineEmits<{
-  (e: 'isCompleteInit', value: boolean): void
-}>()
+  (e: "isCompleteInit", value: boolean): void;
+}>();
 
 function handleRendererCreated({
   renderer,
@@ -38,8 +42,14 @@ function onModelLoadeded(gltf: any) {
     z: 3,
     ease: "power2.inOut",
     onComplete: () => {
-      emit('isCompleteInit', true)
-    }
+      emit("isCompleteInit", true);
+      isCompleteInit.value = true;
+      messages.value = [
+        { message: `Hiii! I'm Híu`, type: "info", duration: 3000 },
+        { message: `Welcome to my profile`, type: "info", duration: 3000 },
+        { message: `Scroll down to see more!`, type: "info", duration: 3000 },
+      ];
+    },
   });
 
   if (model.value) {
@@ -47,15 +57,17 @@ function onModelLoadeded(gltf: any) {
     console.log("x:", x, "y:", y, "z:", z);
   }
 
-  console.log('renderer ', renderer.value);
-  console.log('scene ', scene.value);
-  console.log('camera ', camera.value);
-  console.log('model ', model.value);
-};
+  console.log("renderer ", renderer.value);
+  console.log("scene ", scene.value);
+  console.log("camera ", camera.value);
+  console.log("model ", model.value);
+}
 </script>
 
 <template>
   <div class="viewer-container">
+    <Notification :isShow="isCompleteInit" :noti="messages" :top="80" />
+
     <Renderer
       :pixelRatio="pixelRatio"
       ref="renderer"
@@ -65,9 +77,12 @@ function onModelLoadeded(gltf: any) {
       alpha
       @created="handleRendererCreated"
     >
-      <Camera ref="camera" :position="cameraPosition" :lookAt="{ x: 0, y: 1, z: 0 }" />
-      <Scene
-      ref="scene">
+      <Camera
+        ref="camera"
+        :position="cameraPosition"
+        :lookAt="{ x: 0, y: 1, z: 0 }"
+      />
+      <Scene ref="scene">
         <HemisphereLight
           :intensity="4"
           :color="'#ffffff'"

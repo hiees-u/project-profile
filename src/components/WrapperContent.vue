@@ -19,14 +19,17 @@ watch(isCompleteInit, (newVal) => {
 </script>
 
 <template>
-  <Astronaut @isCompleteInit="(val:boolean) => {isCompleteInit = val}"/>
-  <Notification :isShow="isCompleteInit" :noti="messages" :top="80"/>
-  <div class="content">
-    
+  <div class="wapper">
+    <Astronaut @isCompleteInit="(val:boolean) => {isCompleteInit = val}"/>
+    <div class="content">
+      
+    </div>
+    <!-- <Notification :isShow="isCompleteInit" :noti="messages" :top="80"/> -->
   </div>
 </template>
 
 <style scoped>
+.wapper {}
 .content {
   height: 500vh;
 }

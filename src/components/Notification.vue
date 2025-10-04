@@ -44,7 +44,7 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div class="wapper">
+  <div class="wapper-notification">
     <div class="notification" v-if="message" :style="{ top: notificationTop + 'px' }">
       <span>{{ message }}</span>
     </div>
@@ -52,7 +52,7 @@ watchEffect(() => {
 </template>
 
 <style scoped>
-.wapper {
+.wapper-notification {
   position: fixed;
   top: 0;
   right: 0;
