@@ -10,7 +10,7 @@ const messages = ref<NotificationType[]>([]);
 watch(isCompleteInit, (newVal) => {
   if (newVal) {
     messages.value = [
-      { message: `Hiii! I'm Híu`, type: 'info', duration: 1500000 },
+      { message: `Hiii! I'm Híu`, type: 'info', duration: 3000 },
       { message: `Welcome to my profile`, type: 'info', duration: 3000 },
       { message: `Scroll down to see more!`, type: 'info', duration: 3000 },
     ];

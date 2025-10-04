@@ -65,7 +65,7 @@ watchEffect(() => {
   position: fixed;
   left: 52%;
   max-width: 35%;
-  top: calc(10% - 20px);
+  top: calc(10% - 30px);
   background-color: #333;
   z-index: -1;
   color: rgb(0, 0, 0);
