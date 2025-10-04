@@ -46,7 +46,7 @@ watchEffect(() => {
 <template>
   <div class="wapper-notification">
     <!--  -->
-    <div class="notification" v-if="message" :style="{ top: `calc(10% - ${heightNoti}px)` }">
+    <div class="notification" v-if="message" :style="{ top: `calc(8% - ${heightNoti}px)` }">
       <span>{{ message }}</span>
     </div>
   </div>
