@@ -11,14 +11,15 @@ const props = defineProps<{
 const messages = ref<NotificationType[]>([]);
 const message = ref('');
 const notificationTop = ref(60);
+let heightNoti = ref(0);
 
 async function extractFirstNotificationMessage() {
   message.value = props.noti[0]?.message || '';
   await nextTick();
   const el = document.querySelector('.notification') as HTMLElement;
   if (el) {
-    const height = el.offsetHeight;
-    notificationTop.value = height > 35 ? props.top - (height - 15) : 60;
+    heightNoti.value = el.offsetHeight;
+    // notificationTop.value = height > 35 ? props.top - (height - 15) : 60;
   }
 
   await delay(messages.value[0]?.duration || 1000);
@@ -44,8 +45,8 @@ watchEffect(() => {
 
 <template>
   <div class="wapper-notification">
-    <!-- :style="{ top: notificationTop + 'px' }" -->
-    <div class="notification" v-if="message" >
+    <!--  -->
+    <div class="notification" v-if="message" :style="{ top: `calc(10% - ${heightNoti}px)` }">
       <span>{{ message }}</span>
     </div>
   </div>
