@@ -42,6 +42,11 @@ function onModelLoadeded(gltf: any) {
     }
   });
 
+  if (model.value) {
+    const { x, y, z } = model.value.position;
+    console.log("x:", x, "y:", y, "z:", z);
+  }
+
   console.log('renderer ', renderer.value);
   console.log('scene ', scene.value);
   console.log('camera ', camera.value);
@@ -54,8 +59,8 @@ function onModelLoadeded(gltf: any) {
     <Renderer
       :pixelRatio="pixelRatio"
       ref="renderer"
-      resize
       orbit-ctrl
+      resize
       antialias
       alpha
       @created="handleRendererCreated"
@@ -86,6 +91,7 @@ function onModelLoadeded(gltf: any) {
   height: 100vh;
   background-color: transparent;
   position: relative;
+  z-index: -1;
   overflow: hidden;
   margin: auto;
   position: relative;
@@ -96,5 +102,6 @@ function onModelLoadeded(gltf: any) {
   height: 100% !important;
   display: block;
   pointer-events: auto;
+  position: fixed;
 }
 </style>
