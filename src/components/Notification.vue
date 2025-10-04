@@ -10,7 +10,6 @@ const props = defineProps<{
 }>();
 const messages = ref<NotificationType[]>([]);
 const message = ref('');
-const notificationTop = ref(60);
 let heightNoti = ref(0);
 
 async function extractFirstNotificationMessage() {
@@ -19,7 +18,6 @@ async function extractFirstNotificationMessage() {
   const el = document.querySelector('.notification') as HTMLElement;
   if (el) {
     heightNoti.value = el.offsetHeight;
-    // notificationTop.value = height > 35 ? props.top - (height - 15) : 60;
   }
 
   await delay(messages.value[0]?.duration || 1000);

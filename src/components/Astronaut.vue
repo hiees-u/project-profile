@@ -10,8 +10,8 @@ const astronautUrl = new URL(
   import.meta.url
 ).href;
 
-const cameraPosition = { x: 5, y: 30, z: 25 };
-const astronautPosition = { x: 1, y: 14, z: -100 };
+const cameraPosition = { x: -1, y: 15, z: 12 };
+const astronautPosition = { x: 0, y: 5, z: -100 };
 const pixelRatio = window.devicePixelRatio || 1;
 const model = ref<any>(null);
 let renderer: Ref<THREE.WebGLRenderer | null> = ref(null);
@@ -35,7 +35,7 @@ function handleRendererCreated({
 function onModelLoadeded(gltf: any) {
   gsap.to(gltf.scene.position, {
     duration: 3,
-    z: 3,
+    z: 1,
     ease: "power2.inOut",
     onComplete: () => {
       emit('isCompleteInit', true)
