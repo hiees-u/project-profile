@@ -21,7 +21,7 @@ watch(isCompleteInit, (newVal) => {
 <template>
   <div class="wapper">
     <Astronaut @isCompleteInit="(val:boolean) => {isCompleteInit = val}"/>
-    <div class="content"></div>
+    <div class="content">HÍU</div>
     <Notification :noti="messages" :top="80"/>
   </div>
 </template>

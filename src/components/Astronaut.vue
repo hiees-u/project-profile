@@ -12,6 +12,8 @@ const astronautUrl = new URL(
 
 const cameraPosition = { x: -1, y: 15, z: 12 };
 const astronautPosition = { x: 0, y: 5, z: -100 };
+/*const cameraPosition = { x: 5, y: 30, z: 25 };
+const astronautPosition = { x: 1, y: 14, z: -100 }; //size mini*/ 
 const pixelRatio = window.devicePixelRatio || 1;
 const model = ref<any>(null);
 let renderer: Ref<THREE.WebGLRenderer | null> = ref(null);
