@@ -5,7 +5,6 @@ import type NotificationType from '@/types/notification';
 import { delay } from '../unitls/untils';
 
 const props = defineProps<{
-  isShow: boolean;
   top: number;
   noti: NotificationType[];
 }>();
@@ -45,7 +44,8 @@ watchEffect(() => {
 
 <template>
   <div class="wapper-notification">
-    <div class="notification" v-if="message" :style="{ top: notificationTop + 'px' }">
+    <!-- :style="{ top: notificationTop + 'px' }" -->
+    <div class="notification" v-if="message" >
       <span>{{ message }}</span>
     </div>
   </div>
@@ -57,7 +57,7 @@ watchEffect(() => {
   top: 0;
   right: 0;
   width: 100vw;
-  z-index: -1;
+  z-index: -2;
   height: 100vh;
 }
 
@@ -65,6 +65,7 @@ watchEffect(() => {
   position: fixed;
   left: 52%;
   max-width: 35%;
+  top: calc(10% - 20px);
   background-color: #333;
   z-index: -1;
   color: rgb(0, 0, 0);

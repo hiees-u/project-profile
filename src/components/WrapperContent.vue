@@ -10,7 +10,7 @@ const messages = ref<NotificationType[]>([]);
 watch(isCompleteInit, (newVal) => {
   if (newVal) {
     messages.value = [
-      { message: `Hiii! I'm Híu`, type: 'info', duration: 3000 },
+      { message: `Hiii! I'm Híu`, type: 'info', duration: 1500000 },
       { message: `Welcome to my profile`, type: 'info', duration: 3000 },
       { message: `Scroll down to see more!`, type: 'info', duration: 3000 },
     ];
@@ -21,15 +21,13 @@ watch(isCompleteInit, (newVal) => {
 <template>
   <div class="wapper">
     <Astronaut @isCompleteInit="(val:boolean) => {isCompleteInit = val}"/>
-    <div class="content">
-      
-    </div>
-    <!-- <Notification :isShow="isCompleteInit" :noti="messages" :top="80"/> -->
+    <div class="content"></div>
+    <Notification :noti="messages" :top="80"/>
   </div>
 </template>
 
 <style scoped>
-.wapper {}
+/* .wapper {} */
 .content {
   height: 500vh;
 }
