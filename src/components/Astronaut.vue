@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import gsap from "gsap";
 import * as THREE from "three";
-import { defineEmits } from 'vue'
+import { defineEmits } from "vue";
 import { ref, type Ref } from "vue";
 
 const astronautUrl = new URL(
@@ -10,10 +10,20 @@ const astronautUrl = new URL(
   import.meta.url
 ).href;
 
-const cameraPosition = { x: -1, y: 15, z: 12 };
-const astronautPosition = { x: 0, y: 5, z: -100 };
-/*const cameraPosition = { x: 5, y: 30, z: 25 };
-const astronautPosition = { x: 1, y: 14, z: -100 }; //size mini*/ 
+// const cameraPosition = ref({ x: 0, y: 0, z: 0 });  //default
+// const astronautPosition = ref({ x: 0, y: 0, z: -100 }); //default
+const cameraPosition = ref({ x: 1, y: 15, z: 12 });  //default
+const astronautPosition = ref({ x: 0.35, y: 5, z: -100 }); //default
+// const cameraPosition = ref({ x: 5, y: 30, z: 25 }); //size mini
+// const astronautPosition = ref({ x: 1, y: 14, z: -100 }); //size mini
+
+const defaultCamera = { x: 1, y: 15, z: 120 };
+const miniCamera = { x: 5, y: 30, z: 100 };
+
+const defaultAstronaut = { x: 0.35, y: 5, z: -10 };
+const miniAstronaut = { x: 1, y: 14, z: -20 };
+
+
 const pixelRatio = window.devicePixelRatio || 1;
 const model = ref<any>(null);
 let renderer: Ref<THREE.WebGLRenderer | null> = ref(null);
@@ -21,8 +31,42 @@ let scene: Ref<THREE.Scene | null> = ref(null);
 let camera: Ref<THREE.Camera | null> = ref(null);
 
 const emit = defineEmits<{
-  (e: 'isCompleteInit', value: boolean): void
-}>()
+  (e: "isCompleteInit", value: boolean): void;
+}>();
+
+function handleScroll() {
+  const scrollY = window.scrollY;
+  const maxScroll = 100; // Ngưỡng đạt kích thước mini
+  const progress = Math.min(Math.max(scrollY / maxScroll, 0) * 0.001, 1); // clamp từ 0 → 1
+
+  console.log(
+    `Camera:`,
+    cameraPosition.value,
+    `Astronaut:`,
+    astronautPosition.value
+  );
+
+  // Camera tween mượt theo scroll
+  gsap.to(cameraPosition.value, {
+    x: defaultCamera.x + (miniCamera.x - defaultCamera.x) * progress,
+    y: defaultCamera.y + (miniCamera.y - defaultCamera.y) * progress,
+    z: defaultCamera.z + (miniCamera.z - defaultCamera.z) * progress,
+    duration: 0.4,
+    ease: "power2.out",
+    overwrite: true,
+  });
+
+  // Astronaut tween theo scroll
+  gsap.to(astronautPosition.value, {
+    x: defaultAstronaut.x + (miniAstronaut.x - defaultAstronaut.x) * progress,
+    y: defaultAstronaut.y + (miniAstronaut.y - defaultAstronaut.y) * progress,
+    duration: 0.4,
+    ease: "power2.out",
+    overwrite: true,
+  });
+
+  console.log("handleScroll => ", scrollY, progress);
+}
 
 function handleRendererCreated({
   renderer,
@@ -37,23 +81,19 @@ function handleRendererCreated({
 function onModelLoadeded(gltf: any) {
   gsap.to(gltf.scene.position, {
     duration: 3,
-    z: 1,
+    z: 5,
     ease: "power2.inOut",
     onComplete: () => {
-      emit('isCompleteInit', true)
-    }
+      emit("isCompleteInit", true);
+      window.addEventListener("scroll", handleScroll);
+    },
   });
 
   if (model.value) {
     const { x, y, z } = model.value.position;
     console.log("x:", x, "y:", y, "z:", z);
   }
-
-  console.log('renderer ', renderer.value);
-  console.log('scene ', scene.value);
-  console.log('camera ', camera.value);
-  console.log('model ', model.value);
-};
+}
 </script>
 
 <template>
@@ -67,9 +107,12 @@ function onModelLoadeded(gltf: any) {
       alpha
       @created="handleRendererCreated"
     >
-      <Camera ref="camera" :position="cameraPosition" :lookAt="{ x: 0, y: 1, z: 0 }" />
-      <Scene
-      ref="scene">
+      <Camera
+        ref="camera"
+        :position="cameraPosition"
+        :lookAt="astronautPosition"
+      />
+      <Scene ref="scene">
         <HemisphereLight
           :intensity="4"
           :color="'#ffffff'"
