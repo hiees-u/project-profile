@@ -44,11 +44,6 @@
     style="--end-x: 55%;"
   />
   <img
-    src="@/assets/images/clouds/cloud-3.png"
-    alt="cloud-8"
-    class="cloud cloud-8"
-  />
-  <img
     src="@/assets/images/clouds/cloud-6.png"
     alt="cloud-9"
     class="cloud cloud-9"
