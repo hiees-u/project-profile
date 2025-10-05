@@ -1,4 +1,31 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { onMounted } from 'vue'
+
+onMounted(() => {
+  const clouds = document.querySelectorAll<HTMLImageElement>('.cloud')
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const el = entry.target as HTMLElement
+        if (entry.isIntersecting) {
+          el.classList.add('enter')
+          el.classList.remove('leave')
+        } else {
+          el.classList.add('leave')
+          el.classList.remove('enter')
+        }
+      })
+    },
+    {
+      threshold: 0.1,
+      rootMargin: '-65% 0px 60% 0px' // ✅ cả trên và dưới
+    }
+  )
+
+  clouds.forEach((cloud) => observer.observe(cloud))
+})
+</script>
 
 <template>
   <img src="@/assets/images/clouds/cloud-2.png" alt="cloud-1" class="cloud cloud-1" style="--end-x: 0%; --direction: 1;" />
@@ -19,30 +46,31 @@
   position: absolute;
   opacity: 0;
   top: 45vh;
-  animation: cloudFlyIn 3s ease-out forwards;
+  transition: transform 1s ease-in-out, opacity .5s ease-in-out;
+  will-change: transform, opacity;
 }
 
-/* 🔹 vị trí & độ sâu */
-.cloud-1 { top: 45vh; z-index: -3; animation-delay: 0.2s; }
-.cloud-2 { top: 50vh; left: 0; z-index: -3; animation-delay: 0.4s; }
-.cloud-3 { top: 55vh; right: 0; animation-delay: 0.6s; }
-.cloud-4 { top: 50vh; right: 0; z-index: -3; animation-delay: 0.8s; }
-.cloud-5 { top: 60vh; z-index: -3; animation-delay: 1s; }
-.cloud-6 { top: 65vh; z-index: -2; animation-delay: 1.2s; }
-.cloud-7 { top: 65vh; z-index: -2; animation-delay: 1.4s; }
-.cloud-9 { top: 85vh; z-index: -3; animation-delay: 1.6s; }
-.cloud-10 { top: 75vh; z-index: 0; animation-delay: 1.8s; }
-.cloud-11 { top: 75vh; z-index: 0; animation-delay: 2s; }
-
-/* 🔹 Animation chung (1 keyframes xử lý cả left/right) */
-@keyframes cloudFlyIn {
-  0% {
-    transform: translateX(calc(var(--direction, 1) * 120vw));
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(var(--end-x, 0));
-    opacity: 1;
-  }
+/* 🔹 Khi xuất hiện trong viewport */
+.cloud.enter {
+  opacity: 1;
+  transform: translateX(var(--end-x, 0));
 }
+
+/* 🔹 Khi ra khỏi viewport */
+.cloud.leave {
+  opacity: 0;
+  transform: translateX(calc(var(--direction, 1) * 50vw));
+}
+
+/* 🔹 vị trí & độ sâu + delay riêng */
+.cloud-1 { top: 45vh; z-index: -3; transition-delay: 0.2s; }
+.cloud-2 { top: 50vh; left: 0; z-index: -3; transition-delay: 0.4s; }
+.cloud-3 { top: 55vh; right: 0; transition-delay: 0.6s; }
+.cloud-4 { top: 50vh; right: 0; z-index: -3; transition-delay: 0.8s; }
+.cloud-5 { top: 60vh; z-index: -3; transition-delay: 1s; }
+.cloud-6 { top: 65vh; z-index: -2; transition-delay: 1.2s; }
+.cloud-7 { top: 65vh; z-index: -2; transition-delay: 1.4s; }
+.cloud-9 { top: 85vh; z-index: -3; transition-delay: 1.6s; }
+.cloud-10 { top: 75vh; z-index: 0; transition-delay: 1.8s; }
+.cloud-11 { top: 75vh; z-index: 0; transition-delay: 2s; }
 </style>
