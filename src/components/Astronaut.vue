@@ -10,19 +10,9 @@ const astronautUrl = new URL(
   import.meta.url
 ).href;
 
-// const cameraPosition = ref({ x: 0, y: 0, z: 0 });  //default
-// const astronautPosition = ref({ x: 0, y: 0, z: -100 }); //default
 const cameraPosition = ref({ x: 1, y: 15, z: 12 });  //default
 const astronautPosition = ref({ x: 0.35, y: 5, z: -100 }); //default
-// const cameraPosition = ref({ x: 5, y: 30, z: 25 }); //size mini
-// const astronautPosition = ref({ x: 1, y: 14, z: -100 }); //size mini
-
-const defaultCamera = { x: 1, y: 15, z: 120 };
-const miniCamera = { x: 5, y: 30, z: 100 };
-
-const defaultAstronaut = { x: 0.35, y: 5, z: -10 };
-const miniAstronaut = { x: 1, y: 14, z: -20 };
-
+const scaleAstronaut = ref({ x: 1, y: 1, z: 1 }); //default
 
 const pixelRatio = window.devicePixelRatio || 1;
 const model = ref<any>(null);
@@ -36,37 +26,28 @@ const emit = defineEmits<{
 
 function handleScroll() {
   const scrollY = window.scrollY;
-  const maxScroll = 100; // Ngưỡng đạt kích thước mini
-  const progress = Math.min(Math.max(scrollY / maxScroll, 0) * 0.001, 1); // clamp từ 0 → 1
+  const maxScroll = 100;
+  const progress = Math.min(Math.max(scrollY / maxScroll, 0), 1);
 
-  console.log(
-    `Camera:`,
-    cameraPosition.value,
-    `Astronaut:`,
-    astronautPosition.value
-  );
+  const targetScale = progress >= 0.5 ? 0.5 : 1 - progress;
 
-  // Camera tween mượt theo scroll
-  gsap.to(cameraPosition.value, {
-    x: defaultCamera.x + (miniCamera.x - defaultCamera.x) * progress,
-    y: defaultCamera.y + (miniCamera.y - defaultCamera.y) * progress,
-    z: defaultCamera.z + (miniCamera.z - defaultCamera.z) * progress,
-    duration: 0.4,
-    ease: "power2.out",
-    overwrite: true,
+  gsap.to(scaleAstronaut.value, {
+    x: targetScale,
+    y: targetScale,
+    z: targetScale,
+    duration: 0.3,
+    ease: "power1.out",
   });
 
-  // Astronaut tween theo scroll
   gsap.to(astronautPosition.value, {
-    x: defaultAstronaut.x + (miniAstronaut.x - defaultAstronaut.x) * progress,
-    y: defaultAstronaut.y + (miniAstronaut.y - defaultAstronaut.y) * progress,
-    duration: 0.4,
-    ease: "power2.out",
-    overwrite: true,
+    x: 0.35,
+    y: 5 + progress * 3.5,
+    z: 5,
+    duration: 0.3,
+    ease: "power1.out",
   });
-
-  console.log("handleScroll => ", scrollY, progress);
 }
+
 
 function handleRendererCreated({
   renderer,
@@ -78,8 +59,8 @@ function handleRendererCreated({
   renderer.toneMappingExposure = 1.0;
 }
 
-function onModelLoadeded(gltf: any) {
-  gsap.to(gltf.scene.position, {
+function onModelLoadeded() {
+  gsap.to(astronautPosition.value, {
     duration: 3,
     z: 5,
     ease: "power2.inOut",
@@ -88,11 +69,6 @@ function onModelLoadeded(gltf: any) {
       window.addEventListener("scroll", handleScroll);
     },
   });
-
-  if (model.value) {
-    const { x, y, z } = model.value.position;
-    console.log("x:", x, "y:", y, "z:", z);
-  }
 }
 </script>
 
@@ -122,6 +98,7 @@ function onModelLoadeded(gltf: any) {
         <GltfModel
           ref="model"
           :src="astronautUrl"
+          :scale="scaleAstronaut"
           :position="astronautPosition"
           @load="onModelLoadeded"
         />
