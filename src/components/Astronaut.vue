@@ -10,7 +10,7 @@ const astronautUrl = new URL(
   import.meta.url
 ).href;
 
-const cameraPosition = ref({ x: 1, y: 15, z: 12 });  //default
+const cameraPosition = ref({ x: 1, y: 15, z: 12 }); //default
 const astronautPosition = ref({ x: 0.35, y: 5, z: -100 }); //default
 const scaleAstronaut = ref({ x: 1, y: 1, z: 1 }); //default
 
@@ -47,7 +47,6 @@ function handleScroll() {
     ease: "power1.out",
   });
 }
-
 
 function handleRendererCreated({
   renderer,
@@ -109,14 +108,17 @@ function onModelLoadeded() {
 
 <style scoped>
 .viewer-container {
-  width: 100vw; /* hoặc bất kỳ kích thước nào bạn muốn */
-  height: 100vh;
+  /* display: none; */
+  width: 100%; /* hoặc bất kỳ kích thước nào bạn muốn */
+  height: 100%;
   background-color: transparent;
-  position: relative;
   z-index: -1;
   overflow: hidden;
-  margin: auto;
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
 }
 
 :global(canvas) {

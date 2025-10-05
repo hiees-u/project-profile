@@ -1,5 +1,5 @@
 <template>
-  <canvas ref="starCanvas" class="canvas"></canvas>
+  <canvas ref="starCanvas" class="canvas-background"></canvas>
 </template>
 
 <script setup>
@@ -83,13 +83,13 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-.canvas {
+.canvas-background {
   position: fixed;
   top: 0;
   left: 0;
   z-index: -3;
-  width: 100vw;
-  height: 100vh;
+  width: 100% !important;
+  height: 100% !important;
   background-color: black;
 }
 

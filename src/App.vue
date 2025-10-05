@@ -10,9 +10,4 @@ import WrapperContent from '@/components/WrapperContent.vue';
 </template>
 
 <style scoped>
-body {
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-}
 </style>

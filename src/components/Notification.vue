@@ -53,8 +53,8 @@ watchEffect(() => {
 .wapper-notification {
   position: fixed;
   top: 0;
-  right: 0;
-  width: 100vw;
+  left: 0;
+  width: 100%;
   z-index: -2;
   height: 100vh;
 }
